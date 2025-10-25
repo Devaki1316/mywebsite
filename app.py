@@ -13,7 +13,7 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from sklearn.metrics.pairwise import cosine_similarity
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# Suppress TF GPU warnings
+# Suppress TensorFlow GPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # ----- CONFIG -----
@@ -40,14 +40,19 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 db = SQLAlchemy(app)
 mail = Mail(app)
 
-# Twilio optional
+# Twilio optional — safe check
 TWILIO_SID = os.environ.get('TWILIO_SID')
 TWILIO_AUTH = os.environ.get('TWILIO_AUTH')
 TWILIO_FROM = os.environ.get('TWILIO_FROM')
 USE_TWILIO = all([TWILIO_SID, TWILIO_AUTH, TWILIO_FROM])
+twilio_client = None
 if USE_TWILIO:
-    from twilio.rest import Client
-    twilio_client = Client(TWILIO_SID, TWILIO_AUTH)
+    try:
+        from twilio.rest import Client
+        twilio_client = Client(TWILIO_SID, TWILIO_AUTH)
+    except ImportError:
+        USE_TWILIO = False
+        print("Twilio package not installed; skipping SMS notifications.")
 
 # Login manager
 login_manager = LoginManager(app)

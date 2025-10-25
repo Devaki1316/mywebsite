@@ -8,3 +8,4 @@ scikit-learn
 numpy
 gunicorn
 werkzeug
+twilio
