@@ -6,3 +6,4 @@ tensorflow
 numpy
 scikit-learn
 Pillow
+gunicorn
