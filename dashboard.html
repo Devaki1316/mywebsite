@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ current_user.username }}</h2>
+<p><a class="btn" href="{{ url_for('lost') }}">Report Lost Item</a>
+   <a class="btn" href="{{ url_for('found') }}">Report Found Item</a></p>
+
+<h3>Your Lost Items</h3>
+{% for it in lost %}
+  <div class="item">
+    <img src="{{ url_for('uploaded_file', filename=it.image_filename) }}" width="120">
+    <div>{{ it.name }} — {{ it.location }} ({{ it.date.strftime('%Y-%m-%d') }})</div>
+  </div>
+{% else %}
+  <p>No lost items yet.</p>
+{% endfor %}
+
+<h3>Your Found Items</h3>
+{% for it in found %}
+  <div class="item">
+    <img src="{{ url_for('uploaded_file', filename=it.image_filename) }}" width="120">
+    <div>{{ it.name }} — {{ it.location }} ({{ it.date.strftime('%Y-%m-%d') }})</div>
+  </div>
+{% else %}
+  <p>No found items yet.</p>
+{% endfor %}
+{% endblock %}

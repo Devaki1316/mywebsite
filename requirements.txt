@@ -1,0 +1,8 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Mail
+tensorflow
+numpy
+scikit-learn
+Pillow

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Lost Item</title>
+  <style>
+    body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;  /* centers horizontally */
+  align-items: center;      /* centers vertically */
+  background-color: #cfeeff; /* your background color */
+}
+
+.container {
+  background: white;
+  padding: 30px 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  text-align: center;
+}
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <form method="post" enctype="multipart/form-data" class="lform">
+    <h2>Report Lost Item</h2>
+    
+    <input name="name" placeholder="Item Name" required><br>
+    <input name="description" placeholder="Description"><br>
+    <input name="location" placeholder="Location" required><br>
+    <input name="contact" placeholder="Contact (Email or Phone)" required><br>
+
+    <label for="image">Upload or Capture Image:</label><br>
+    <input type="file" id="image" name="image" accept="image/*" capture="environment"><br><br>
+
+    <!-- Optional live camera preview -->
+    <video id="camera" width="300" height="200" autoplay style="display:none;"></video>
+    <canvas id="snapshot" width="300" height="200" style="display:none;"></canvas><br>
+
+    <button type="button" id="startCamera">📷 Open Camera</button>
+    <button type="button" id="takePhoto" style="display:none;">Capture Photo</button><br><br>
+
+    <button type="submit">Submit</button>
+
+    <p><a href="{{ url_for('dashboard') }}">← Back to Dashboard</a></p>
+    <a href="/">Home</a>
+  </form>
+
+  <script>
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('snapshot');
+    const startBtn = document.getElementById('startCamera');
+    const captureBtn = document.getElementById('takePhoto');
+    const fileInput = document.getElementById('image');
+
+    startBtn.onclick = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.style.display = 'block';
+        captureBtn.style.display = 'inline';
+        startBtn.style.display = 'none';
+      } catch (err) {
+        alert('Camera access denied or not available.');
+      }
+    };
+
+    captureBtn.onclick = () => {
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "captured_image.jpg", { type: "image/jpeg" });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+      });
+      alert("Photo captured successfully!");
+    };
+  </script>
+</body>
+</html>

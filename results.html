@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Results</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center;     
+      background: linear-gradient(to right, #9be2fe, #67d1fb);
+      font-family: Arial, sans-serif;
+      color: #000;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .image-box {
+      background-color: white;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 320px;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .image-title {
+      font-weight: bold;
+      font-size: 18px;
+      color: #005f73;
+    }
+
+    .match-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .links {
+      margin-top: 40px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: #0047ab;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .links a:hover {
+      color: #002a5e;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Match Results</h2>
+
+  <div class="container">
+    <!-- Query Image Section -->
+    <div class="image-box">
+      <div class="image-title">Query Image</div>
+      <img src="{{ url_for('uploaded_file', filename=query_image) }}" alt="Query Image">
+    </div>
+
+    <!-- Matched Images Section -->
+    {% if matches %}
+      {% for m in matches %}
+        <div class="image-box">
+          <div class="image-title">Found Image</div>
+          <img src="{{ url_for('uploaded_file', filename=m.item.image_filename) }}" alt="Matched Image">
+          <div class="match-info">
+  <b>{{ m.item.name }}</b> ({{ m.similarity }})<br>
+  {{ m.item.description }}<br>
+  Contact: {{ m.item.contact }}<br>
+  Location: {{ m.item.location }}
+</div>
+
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No matches found.</p>
+    {% endif %}
+  </div>
+
+  <!-- Navigation Links -->
+  <div class="links">
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <a href="/">Home</a>
+  </div>
+</body>
+</html>

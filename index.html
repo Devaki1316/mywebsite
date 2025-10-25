@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title class="">AI Lost & Found</title>
+  
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h1><center>AI Lost & Found Portal</center></h1>
+<p><a href="{{ url_for('lost') }}"><center>Report Lost Item</center></a>  </br>
+   <a href="{{ url_for('found') }}"><center>Report Found Item</center></a></p>
+
+<h2><center>Recent Items</center></h2>
+<ul>
+{% for item in items %}
+  <li>{{ item.type }} - {{ item.name }} 
+      <img src="{{ url_for('uploads', filename=item.image_filename) }}" width="100">
+  </li>
+{% endfor %}
+</ul>
+</body>
+</html>
