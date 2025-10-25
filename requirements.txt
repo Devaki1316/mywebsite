@@ -2,8 +2,9 @@ Flask
 Flask-SQLAlchemy
 Flask-Login
 Flask-Mail
+python-dotenv
 tensorflow
-numpy
 scikit-learn
-Pillow
+numpy
 gunicorn
+werkzeug
